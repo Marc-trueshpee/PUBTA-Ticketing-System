@@ -1,0 +1,76 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PUBTA - Ticketing System</title>
+    <link rel="icon" href="images/iconmain.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/tsmain.css">
+</head>
+<body>
+
+<header class="topbar">
+    <div class="brand">
+        <img src="images/pubtalogo.png" alt="Service Portal Logo">
+        <div class="logo">PUBTA</div>
+    </div>
+    <div class="user">Marc ▼</div>
+</header>
+
+<div class="ticket-container">
+  <form id="ticketForm" class="ticket-form">
+
+    <label>
+      Requestor
+      <input type="text" id="requestor" required>
+    </label>
+
+    <label>
+      Title
+      <input type="text" id="title" required>
+    </label>
+
+    <label>
+      Short Description
+      <textarea id="description" rows="4" required></textarea>
+    </label>
+
+    <label>
+      Urgency
+      <select id="urgency" required>
+        <option value="">Select urgency</option>
+        <option>High</option>
+        <option>Medium</option>
+        <option>Low</option>
+      </select>
+    </label>
+
+    <label>
+      Priority
+      <select id="priority" required>
+        <option value="">Select priority</option>
+        <option>Critical</option>
+        <option>Medium</option>
+        <option>Low</option>
+      </select>
+    </label>
+
+    <label>
+      Status
+      <select id="status" required>
+        <option>Open</option>
+        <option>In Progress</option>
+        <option>Closed</option>
+      </select>
+    </label>
+
+    <div class="form-actions">
+      <button type="submit">Submit Ticket</button>
+      <a href="tsmain.html" class="cancel">Cancel</a>
+    </div>
+
+  </form>
+</div>
+
+<script src="javascript/tsnewticket.js"></script>
+</body>
+</html>
