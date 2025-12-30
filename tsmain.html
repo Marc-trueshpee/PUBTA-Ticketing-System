@@ -1,0 +1,50 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>PUBTA - Ticketing System</title>
+        <link rel="icon" href="images/iconmain.svg" type="image/svg+xml">
+        <link rel="stylesheet" href="css/tsmain.css">
+    </head>
+    <body>
+
+        <header class="topbar">
+            <div class="brand">
+                <img src="images/pubtalogo.png" alt="Service Portal Logo">
+                <div class="logo">PUBTA</div>
+            </div>
+            <div class="user">Marc ▼</div>
+        </header>
+
+        <div class="app">
+            <aside class="sidebar">
+                <a class="active">Dashboard</a>
+                <a href="tsnewticket.html">New Request</a>
+                <a>Reports</a>
+            </aside>
+
+            <main class="content">
+                <h2>Tickets</h2>
+
+                <table class="ticket-table">
+                <thead>
+                    <tr>
+                    <th>ID</th>
+                    <th>Requestor</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Urgency</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="ticketBody">
+                    <!-- Tickets Appear Here :) -->
+                </tbody>
+                </table>
+            </main>
+        </div>
+
+        <script src="javascript/tsmain.js"></script>
+    </body>
+</html>
