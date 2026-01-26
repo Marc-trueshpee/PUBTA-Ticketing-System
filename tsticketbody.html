@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ticket Details</title>
+  <link rel="stylesheet" href="css/tsmain.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="logo">Service Portal</div>
+  <div class="user">Ticket View</div>
+</header>
+
+<main class="ticket-page">
+  <div class="ticket-container full-width">
+
+    <!-- Top section: ID and Title -->
+    <div class="ticket-top">
+      <div class="ticket-id">ID: <span id="ticket-id"></span></div>
+      <h1 class="ticket-title" id="ticket-title" readonly></h1>
+    </div>
+
+    <!-- Small editable bars -->
+    <div class="ticket-fields">
+      <label>
+        Requestor
+        <input type="text" id="ticket-requestor">
+      </label>
+
+      <label>
+        Urgency
+        <select id="ticket-urgency">
+          <option>High</option>
+          <option>Medium</option>
+          <option>Low</option>
+        </select>
+      </label>
+
+      <label>
+        Priority
+        <select id="ticket-priority">
+          <option>Critical</option>
+          <option>Medium</option>
+          <option>Low</option>
+        </select>
+      </label>
+
+      <label>
+        Status
+        <select id="ticket-status">
+          <option>Open</option>
+          <option>In Progress</option>
+          <option>Closed</option>
+        </select>
+      </label>
+    </div>
+
+    <!-- Large scrollable description -->
+    <label class="description-label">
+      Description
+      <textarea id="ticket-description" rows="15"></textarea>
+    </label>
+
+    <div class="form-actions">
+      <button type="button" id="update-ticket">Save Changes</button>
+      <button type="button" id="delete-ticket" class="delete">Delete Ticket</button>
+      <a href="tsmain.html" class="cancel">Back to Dashboard</a>
+    </div>
+
+  </div>
+</main>
+
+<div id="confirm-modal" class="modal">
+  <div class="modal-content">
+    <p id="confirm-message">Are you sure?</p>
+    <div class="modal-actions">
+      <button id="confirm-yes">Yes</button>
+      <button id="confirm-no">No</button>
+    </div>
+  </div>
+</div>
+
+<div id="info-modal" class="modal">
+  <div class="modal-content">
+    <p id="info-message">Action completed!</p>
+    <div class="modal-actions">
+      <button id="info-ok">OK</button>
+    </div>
+  </div>
+</div>
+
+<script src="javascript/tsticketbody.js"></script>
+</body>
+</html>
