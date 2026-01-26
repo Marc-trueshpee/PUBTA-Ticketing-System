@@ -7,13 +7,11 @@ document.getElementById("ticketForm").addEventListener("submit", e => {
     description: document.getElementById("description").value.trim(),
     urgency: document.getElementById("urgency").value,
     priority: document.getElementById("priority").value,
-    status: "Open" // default status
+    status: document.getElementById("status").value
   };
 
   const tickets = JSON.parse(localStorage.getItem("tickets")) || [];
-
   tickets.push(ticket);
-
   localStorage.setItem("tickets", JSON.stringify(tickets));
 
   window.location.href = "tsmain.html";

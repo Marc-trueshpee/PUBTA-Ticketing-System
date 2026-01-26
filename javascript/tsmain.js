@@ -26,7 +26,7 @@ function renderTickets() { //refreshes the ticket page every refresh
     const tr = document.createElement("tr");
 
     tr.innerHTML = `
-      <td>${t.id}</td>
+      <td><a href="tsticketbody.html?id=${t.id}" class="ticket-link">${t.id}</a></td>
       <td>${t.requestor}</td>
       <td>${t.title}</td>
       <td class="desc">${t.description}</td>
