@@ -118,6 +118,7 @@ body {
   min-height: calc(100vh - 80px); 
   padding: 20px;
   background: #f3f4f6;    
+  
 }
 
 .ticket-form {
@@ -129,6 +130,7 @@ body {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px; 
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.329);
 }
 
 .ticket-form label textarea,
@@ -188,6 +190,8 @@ body {
 
 .form-actions button:hover {
   background: #125aa0;
+  transform: scale(1.07);
+  transition: 0.3s;
 }
 
 /* Cancel button */
@@ -204,6 +208,7 @@ body {
 
 .form-actions .cancel:hover {
   background: #d1d5db;
+  
 }
 
 /*---------------------------------ticket body------------------------------------*/
@@ -251,7 +256,7 @@ body {
 
 .ticket-id {
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 1.8rem;
 }
 
 .ticket-title {
@@ -338,8 +343,6 @@ body {
   text-decoration: none;
 }
 
-
-
 /* Modal background */
 .modal {
   display: none; /* hidden by default */
@@ -389,4 +392,45 @@ body {
   color: #111;
 }
 
+/* History css */
+.ticket-history {
+  margin-top: 30px;
+}
 
+.ticket-history h3 {
+  margin-bottom: 12px;
+}
+
+.history-entry {
+  background: #f9fafb;
+  border-left: 5px solid #1976d2;
+  padding: 12px 14px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.history-user {
+  font-weight: bold;
+  color: #111;
+  margin-bottom: 4px;
+}
+
+.history-change {
+  color: #444;
+}
+
+.history-description {
+  margin-top: 4px;
+  font-style: italic;
+  color: #666;
+}
+/*Archive*/
+.ticket-container input:disabled,
+.ticket-container select:disabled,
+.ticket-container textarea[readonly] {
+  background-color: #f3f4f6;
+  color: #555;
+  cursor: not-allowed;
+}
