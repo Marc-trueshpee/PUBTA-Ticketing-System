@@ -2,17 +2,22 @@
 const params = new URLSearchParams(window.location.search);
 const ticketId = params.get("id");
 
-if (!ticketId) {
+if (!ticketId){
   window.location.href = "tsmain.html";
 }
 
 // Load tickets from localStorage
 let tickets = JSON.parse(localStorage.getItem("tickets")) || [];
 let ticket = tickets.find(t => t.id === ticketId);
+let archivedTickets = JSON.parse(localStorage.getItem("archivedTickets")) || [];
 
 if (!ticket) {
   window.location.href = "tsmain.html";
 }
+
+if (!ticket.history) ticket.history = [];
+
+const historyList = document.getElementById("history-list");
 
 // ===== Pre-fill all fields =====
 document.getElementById("ticket-id").textContent = ticket.id;
@@ -61,28 +66,102 @@ function showInfo(message, callback) {
   };
 }
 
+// ==== Ticket History ====
+function renderHistory() {
+  historyList.innerHTML = "";
+
+  if (ticket.history.length === 0) {
+    historyList.innerHTML = "<p>No history yet.</p>";
+    return;
+  }
+
+  ticket.history.slice().reverse().forEach(entry => {
+    const div = document.createElement("div");
+    div.className = "history-entry";
+
+    div.innerHTML = `
+      <div class="history-user">${entry.user} — ${entry.time}</div>
+      ${entry.changes.map(c => `<div class="history-change">${c}</div>`).join("")}
+      ${entry.descriptionChanged ? `<div class="history-description">Description updated</div>` : ""}
+    `;
+
+    historyList.appendChild(div);
+  });
+}
+
 // ===== Save ticket =====
 document.getElementById("update-ticket").addEventListener("click", () => {
-  ticket.requestor = document.getElementById("ticket-requestor").value.trim();
-  ticket.urgency = document.getElementById("ticket-urgency").value;
-  ticket.priority = document.getElementById("ticket-priority").value;
-  ticket.status = document.getElementById("ticket-status").value;
-  ticket.description = document.getElementById("ticket-description").value.trim();
+  const changes = [];
+  let descriptionChanged = false;
 
-  localStorage.setItem("tickets", JSON.stringify(tickets));
-  showInfo("Ticket updated successfully!");
+  const newRequestor = document.getElementById("ticket-requestor").value.trim();
+  const newUrgency = document.getElementById("ticket-urgency").value;
+  const newPriority = document.getElementById("ticket-priority").value;
+  const newStatus = document.getElementById("ticket-status").value;
+  const newDescription = document.getElementById("ticket-description").value.trim();
+
+  // Compare and record changes
+  if (ticket.requestor !== newRequestor) {
+    changes.push(`Requestor: ${ticket.requestor} → ${newRequestor}`);
+    ticket.requestor = newRequestor;
+  }
+
+  if (ticket.urgency !== newUrgency) {
+    changes.push(`Urgency: ${ticket.urgency} → ${newUrgency}`);
+    ticket.urgency = newUrgency;
+  }
+
+  if (ticket.priority !== newPriority) {
+    changes.push(`Priority: ${ticket.priority} → ${newPriority}`);
+    ticket.priority = newPriority;
+  }
+
+  if (ticket.status !== newStatus) {
+    changes.push(`Status: ${ticket.status} → ${newStatus}`);
+    ticket.status = newStatus;
+  }
+
+  if (ticket.description !== newDescription) {
+    descriptionChanged = true;
+    ticket.description = newDescription;
+  }
+
+  // If something changed, log history
+  if (changes.length > 0 || descriptionChanged) {
+    if (!ticket.history) ticket.history = [];
+
+    ticket.history.push({
+      user: "Marc",
+      time: new Date().toLocaleString("en-PH", { timeZone: "Asia/Manila" }) + " PHT",
+      changes: changes,
+      descriptionChanged: descriptionChanged
+    });
+
+    localStorage.setItem("tickets", JSON.stringify(tickets));
+    renderHistory(); // refresh history section on screen
+
+    showInfo("Ticket updated successfully!", () => {
+      window.location.href = "tsmain.html";
+    });
+  } else {
+    showInfo("No changes made.");
+  }
 });
 
 
-// ===== Delete ticket =====
+// ===== Archive ticket =====
 document.getElementById("delete-ticket").addEventListener("click", () => {
-  showConfirm(`Are you sure you want to delete ticket ${ticket.id}?`, (confirmed) => {
+  showConfirm(`Are you sure you want to archive ticket ${ticket.id}?`, (confirmed) => {
     if (confirmed) {
+      archivedTickets.push(ticket);
       tickets = tickets.filter(t => t.id !== ticket.id);
       localStorage.setItem("tickets", JSON.stringify(tickets));
-      showInfo(`Ticket ${ticket.id} deleted.`, () => {
+      localStorage.setItem("archivedTickets", JSON.stringify(archivedTickets));
+      showInfo(`Ticket ${ticket.id} archived.`, () => {
         window.location.href = "tsmain.html";
       });
     }
-  });
+  });s
 });
+
+renderHistory();

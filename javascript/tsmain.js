@@ -1,10 +1,12 @@
 function generateTicketId(number) {
   return String(number).padStart(5, "0");
-}
+} //generate incrementing for id
 
+//pull existing data from json to not repeat self
 let tickets = JSON.parse(localStorage.getItem("tickets")) || [];
+let archiveTickets = JSON.parse(localStorage.getItem("archivedTickets")) || [];
 
-let ticketCounter = tickets
+let ticketCounter = [...tickets,...archiveTickets] //checks both normal and archive so no repetitions
   .map(t => parseInt(t.id || "0", 10))
   .reduce((max, id) => Math.max(max, id), 0);
 
@@ -16,10 +18,10 @@ tickets.forEach(t => {
 });
 
 localStorage.setItem("tickets", JSON.stringify(tickets));
-
 const tbody = document.getElementById("ticketBody");
 
-function renderTickets() { //refreshes the ticket page every refresh
+//refreshes the ticket page every load
+function renderTickets() { 
   tbody.innerHTML = "";
 
   tickets.forEach(t => {

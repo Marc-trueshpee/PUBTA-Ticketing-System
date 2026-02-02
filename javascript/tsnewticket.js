@@ -1,6 +1,6 @@
 document.getElementById("ticketForm").addEventListener("submit", e => {
-  e.preventDefault();
-
+  e.preventDefault(); 
+  //create new ticket element when submit is pressed
   const ticket = {
     requestor: document.getElementById("requestor").value.trim(),
     title: document.getElementById("title").value.trim(),
