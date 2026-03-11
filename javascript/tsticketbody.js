@@ -16,6 +16,9 @@ if (!ticket) {
 }
 
 if (!ticket.history) ticket.history = [];
+if (!ticket.createdAt) {
+  ticket.createdAt = "Unknown";
+}
 
 const historyList = document.getElementById("history-list");
 
@@ -66,12 +69,28 @@ function showInfo(message, callback) {
   };
 }
 
+function getFormattedDate() {
+  return new Date().toLocaleString("en-PH", {
+    timeZone: "Asia/Manila",
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true
+  }) + " PHT";
+}
+
 // ==== Ticket History ====
 function renderHistory() {
-  historyList.innerHTML = "";
+  historyList.innerHTML = `
+  <div class="history-entry">
+    <div class="history-user">Created — ${ticket.createdAt}</div>
+  </div>
+  `;
 
   if (ticket.history.length === 0) {
-    historyList.innerHTML = "<p>No history yet.</p>";
+    historyList.innerHTML += "<p>No history yet.</p>";
     return;
   }
 
@@ -132,7 +151,7 @@ document.getElementById("update-ticket").addEventListener("click", () => {
 
     ticket.history.push({
       user: "Marc",
-      time: new Date().toLocaleString("en-PH", { timeZone: "Asia/Manila" }) + " PHT",
+      time: getFormattedDate(),
       changes: changes,
       descriptionChanged: descriptionChanged
     });
@@ -161,7 +180,7 @@ document.getElementById("delete-ticket").addEventListener("click", () => {
         window.location.href = "tsmain.html";
       });
     }
-  });s
+  });
 });
 
 renderHistory();

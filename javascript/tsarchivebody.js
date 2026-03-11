@@ -64,10 +64,14 @@ function showInfo(message, callback) {
 
 // ticket history loading
 function renderHistory() {
-  historyList.innerHTML = "";
+  historyList.innerHTML = `
+  <div class="history-entry">
+    <div class="history-user">Created — ${ticket.createdAt}</div>
+  </div>
+  `;
 
   if (ticket.history.length === 0) {
-    historyList.innerHTML = "<p>No history yet.</p>";
+    historyList.innerHTML += "<p>No history.</p>";
     return;
   }
 
