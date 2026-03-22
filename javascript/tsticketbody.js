@@ -31,6 +31,13 @@ document.getElementById("ticket-priority").value = ticket.priority;
 document.getElementById("ticket-status").value = ticket.status;
 document.getElementById("ticket-description").value = ticket.description;
 
+document.getElementById("ticket-business-impact").value = ticket.business_impact;
+document.getElementById("ticket-investigation").value = ticket.investigation;
+document.getElementById("ticket-current-status").value = ticket.current_status;
+document.getElementById("ticket-next-steps").value = ticket.next_steps;
+
+document.getElementById("ticket-requestor").disabled = true;
+
 
 // ===== Modal elements =====
 const confirmModal = document.getElementById("confirm-modal");
@@ -81,6 +88,27 @@ function getFormattedDate() {
   }) + " PHT";
 }
 
+function clean(text) {
+  return text ? text.trim() : "-";
+}
+
+function formatFullDescription(data) {
+  return `Business Impact:
+${clean(data.business_impact)}
+
+Investigation:
+${clean(data.investigation)}
+
+Current Status:
+${clean(data.current_status)}
+
+Next Steps:
+${clean(data.next_steps)}
+
+Description:
+${clean(data.description)}`;
+}
+
 // ==== Ticket History ====
 function renderHistory() {
   historyList.innerHTML = `
@@ -101,7 +129,13 @@ function renderHistory() {
     div.innerHTML = `
       <div class="history-user">${entry.user} — ${entry.time}</div>
       ${entry.changes.map(c => `<div class="history-change">${c}</div>`).join("")}
-      ${entry.descriptionChanged ? `<div class="history-description">Description updated</div>` : ""}
+      ${entry.descriptionChanged ? `
+        <div class="history-description">
+          Description changed
+          <div class="history-old">From: \n${entry.oldDescription}</div>
+          <div class="history-new">To: \n${entry.newDescription}</div>
+        </div>
+      ` : ""}
     `;
 
     historyList.appendChild(div);
@@ -113,17 +147,29 @@ document.getElementById("update-ticket").addEventListener("click", () => {
   const changes = [];
   let descriptionChanged = false;
 
-  const newRequestor = document.getElementById("ticket-requestor").value.trim();
+  /*const newRequestor = */document.getElementById("ticket-requestor").value.trim();
   const newUrgency = document.getElementById("ticket-urgency").value;
   const newPriority = document.getElementById("ticket-priority").value;
   const newStatus = document.getElementById("ticket-status").value;
   const newDescription = document.getElementById("ticket-description").value.trim();
+  const newBusinessImpact = document.getElementById("ticket-business-impact").value.trim();
+  const newInvestigation = document.getElementById("ticket-investigation").value.trim();
+  const newCurrentStatus = document.getElementById("ticket-current-status").value.trim();
+  const newNextSteps = document.getElementById("ticket-next-steps").value.trim();
+
+  const newFormatted = formatFullDescription({
+    business_impact: newBusinessImpact,
+    investigation: newInvestigation,
+    current_status: newCurrentStatus,
+    next_steps: newNextSteps,
+    description: newDescription
+  });
 
   // Compare and record changes
-  if (ticket.requestor !== newRequestor) {
-    changes.push(`Requestor: ${ticket.requestor} → ${newRequestor}`);
-    ticket.requestor = newRequestor;
-  }
+  //if (ticket.requestor !== newRequestor) {
+  //  changes.push(`Requestor: ${ticket.requestor} → ${newRequestor}`);
+  //  ticket.requestor = newRequestor;
+  //}
 
   if (ticket.urgency !== newUrgency) {
     changes.push(`Urgency: ${ticket.urgency} → ${newUrgency}`);
@@ -140,8 +186,26 @@ document.getElementById("update-ticket").addEventListener("click", () => {
     ticket.status = newStatus;
   }
 
-  if (ticket.description !== newDescription) {
+  let oldDescription = null;
+
+  const oldFormatted = formatFullDescription({
+    business_impact: ticket.business_impact,
+    investigation: ticket.investigation,
+    current_status: ticket.current_status,
+    next_steps: ticket.next_steps,
+    description: ticket.description
+  });
+
+  if (oldFormatted !== newFormatted) {
     descriptionChanged = true;
+    oldDescription = oldFormatted;
+  }
+
+  if (descriptionChanged) {
+    ticket.business_impact = newBusinessImpact;
+    ticket.investigation = newInvestigation;
+    ticket.current_status = newCurrentStatus;
+    ticket.next_steps = newNextSteps;
     ticket.description = newDescription;
   }
 
@@ -153,7 +217,9 @@ document.getElementById("update-ticket").addEventListener("click", () => {
       user: "Marc",
       time: getFormattedDate(),
       changes: changes,
-      descriptionChanged: descriptionChanged
+      descriptionChanged: descriptionChanged,
+      oldDescription: oldDescription, 
+      newDescription: descriptionChanged ? newFormatted : null
     });
 
     localStorage.setItem("tickets", JSON.stringify(tickets));

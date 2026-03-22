@@ -17,6 +17,10 @@ document.getElementById("ticketForm").addEventListener("submit", e => {
   const ticket = {
     requestor: document.getElementById("requestor").value.trim(),
     title: document.getElementById("title").value.trim(),
+    business_impact: document.getElementById("business-impact").value.trim(),
+    investigation: document.getElementById("investigation").value.trim(),
+    current_status: document.getElementById("current-status").value.trim(),
+    next_steps: document.getElementById("next-steps").value.trim(),
     description: document.getElementById("description").value.trim(),
     urgency: document.getElementById("urgency").value,
     priority: document.getElementById("priority").value,

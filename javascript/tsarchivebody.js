@@ -19,12 +19,20 @@ document.getElementById("ticket-urgency").value = ticket.urgency;
 document.getElementById("ticket-priority").value = ticket.priority;
 document.getElementById("ticket-status").value = "Closed";
 document.getElementById("ticket-description").value = ticket.description;
+document.getElementById("ticket-business-impact").value = ticket.business_impact;
+document.getElementById("ticket-investigation").value = ticket.investigation;
+document.getElementById("ticket-current-status").value = ticket.current_status;
+document.getElementById("ticket-next-steps").value = ticket.next_steps;
 //turn off fields so it can't be edited
 document.getElementById("ticket-requestor").disabled = true;
 document.getElementById("ticket-urgency").disabled = true;
 document.getElementById("ticket-priority").disabled = true;
 document.getElementById("ticket-status").disabled = true;
 document.getElementById("ticket-description").readOnly = true;
+document.getElementById("ticket-business-impact").readOnly = true;
+document.getElementById("ticket-investigation").readOnly = true;
+document.getElementById("ticket-current-status").readOnly = true;
+document.getElementById("ticket-next-steps").readOnly = true;
 
 //elements for confirm/archive message
 const confirmModal = document.getElementById("confirm-modal");
@@ -82,7 +90,13 @@ function renderHistory() {
     div.innerHTML = `
       <div class="history-user">${entry.user} — ${entry.time}</div>
       ${entry.changes.map(c => `<div class="history-change">${c}</div>`).join("")}
-      ${entry.descriptionChanged ? `<div class="history-description">Description updated</div>` : ""}
+      ${entry.descriptionChanged ? `
+        <div class="history-description">
+          Description changed
+          <div class="history-old">From: \n${entry.oldDescription}</div>
+          <div class="history-new">To: \n${entry.newDescription}</div>
+        </div>
+      ` : ""}
     `;
 
     historyList.appendChild(div);
