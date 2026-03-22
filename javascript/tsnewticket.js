@@ -31,5 +31,5 @@ document.getElementById("ticketForm").addEventListener("submit", e => {
   tickets.push(ticket);
   localStorage.setItem("tickets", JSON.stringify(tickets));
 
-  window.location.href = "tsmain.html";
+  window.location.href = "index.html";
 });

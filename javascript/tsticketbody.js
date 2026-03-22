@@ -3,7 +3,7 @@ const params = new URLSearchParams(window.location.search);
 const ticketId = params.get("id");
 
 if (!ticketId){
-  window.location.href = "tsmain.html";
+  window.location.href = "index.html";
 }
 
 // Load tickets from localStorage
@@ -12,7 +12,7 @@ let ticket = tickets.find(t => t.id === ticketId);
 let archivedTickets = JSON.parse(localStorage.getItem("archivedTickets")) || [];
 
 if (!ticket) {
-  window.location.href = "tsmain.html";
+  window.location.href = "index.html";
 }
 
 if (!ticket.history) ticket.history = [];
@@ -226,7 +226,7 @@ document.getElementById("update-ticket").addEventListener("click", () => {
     renderHistory(); // refresh history section on screen
 
     showInfo("Ticket updated successfully!", () => {
-      window.location.href = "tsmain.html";
+      window.location.href = "index.html";
     });
   } else {
     showInfo("No changes made.");
@@ -243,7 +243,7 @@ document.getElementById("delete-ticket").addEventListener("click", () => {
       localStorage.setItem("tickets", JSON.stringify(tickets));
       localStorage.setItem("archivedTickets", JSON.stringify(archivedTickets));
       showInfo(`Ticket ${ticket.id} archived.`, () => {
-        window.location.href = "tsmain.html";
+        window.location.href = "index.html";
       });
     }
   });
