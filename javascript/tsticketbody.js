@@ -3,7 +3,7 @@ const params = new URLSearchParams(window.location.search);
 const ticketId = params.get("id");
 
 if (!ticketId){
-  window.location.href = "tsmain.html";
+  window.location.href = "index.html";
 }
 
 // Load tickets from localStorage
@@ -12,7 +12,7 @@ let ticket = tickets.find(t => t.id === ticketId);
 let archivedTickets = JSON.parse(localStorage.getItem("archivedTickets")) || [];
 
 if (!ticket) {
-  window.location.href = "tsmain.html";
+  window.location.href = "index.html";
 }
 
 if (!ticket.history) ticket.history = [];
@@ -30,11 +30,15 @@ document.getElementById("ticket-urgency").value = ticket.urgency;
 document.getElementById("ticket-priority").value = ticket.priority;
 document.getElementById("ticket-status").value = ticket.status;
 document.getElementById("ticket-description").value = ticket.description;
+document.getElementById("ticket-information").value = ticket.ticket_information;
 
+/*
 document.getElementById("ticket-business-impact").value = ticket.business_impact;
 document.getElementById("ticket-investigation").value = ticket.investigation;
 document.getElementById("ticket-current-status").value = ticket.current_status;
 document.getElementById("ticket-next-steps").value = ticket.next_steps;
+*/
+
 
 document.getElementById("ticket-requestor").disabled = true;
 
@@ -152,10 +156,14 @@ document.getElementById("update-ticket").addEventListener("click", () => {
   const newPriority = document.getElementById("ticket-priority").value;
   const newStatus = document.getElementById("ticket-status").value;
   const newDescription = document.getElementById("ticket-description").value.trim();
+  const newTicketInformation = document.getElementById("ticket-information").value.trim();
+
+  /*
   const newBusinessImpact = document.getElementById("ticket-business-impact").value.trim();
   const newInvestigation = document.getElementById("ticket-investigation").value.trim();
   const newCurrentStatus = document.getElementById("ticket-current-status").value.trim();
   const newNextSteps = document.getElementById("ticket-next-steps").value.trim();
+  
 
   const newFormatted = formatFullDescription({
     business_impact: newBusinessImpact,
@@ -164,6 +172,8 @@ document.getElementById("update-ticket").addEventListener("click", () => {
     next_steps: newNextSteps,
     description: newDescription
   });
+  
+  */
 
   // Compare and record changes
   //if (ticket.requestor !== newRequestor) {
@@ -186,6 +196,17 @@ document.getElementById("update-ticket").addEventListener("click", () => {
     ticket.status = newStatus;
   }
 
+  if (ticket.description !== newDescription) {
+    changes.push(`Description: ${ticket.description} → ${newDescription}`);
+    ticket.description = newDescription;
+  }
+
+  if (ticket.information !== newTicketInformation) {
+    changes.push(`Ticket Info: ${ticket.ticket_information} → ${newTicketInformation}`);
+    ticket.ticket_information = newTicketInformation;
+  }
+
+  /*
   let oldDescription = null;
 
   const oldFormatted = formatFullDescription({
@@ -209,24 +230,23 @@ document.getElementById("update-ticket").addEventListener("click", () => {
     ticket.description = newDescription;
   }
 
+  */
+
   // If something changed, log history
-  if (changes.length > 0 || descriptionChanged) {
+  if (changes.length > 0) {
     if (!ticket.history) ticket.history = [];
 
     ticket.history.push({
       user: "Marc",
       time: getFormattedDate(),
       changes: changes,
-      descriptionChanged: descriptionChanged,
-      oldDescription: oldDescription, 
-      newDescription: descriptionChanged ? newFormatted : null
     });
 
     localStorage.setItem("tickets", JSON.stringify(tickets));
     renderHistory(); // refresh history section on screen
 
     showInfo("Ticket updated successfully!", () => {
-      window.location.href = "tsmain.html";
+      window.location.href = "index.html";
     });
   } else {
     showInfo("No changes made.");
@@ -243,7 +263,7 @@ document.getElementById("delete-ticket").addEventListener("click", () => {
       localStorage.setItem("tickets", JSON.stringify(tickets));
       localStorage.setItem("archivedTickets", JSON.stringify(archivedTickets));
       showInfo(`Ticket ${ticket.id} archived.`, () => {
-        window.location.href = "tsmain.html";
+        window.location.href = "index.html";
       });
     }
   });
