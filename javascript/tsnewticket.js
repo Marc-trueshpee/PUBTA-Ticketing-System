@@ -20,7 +20,7 @@ document.getElementById("ticketForm").addEventListener("submit", e => {
     urgency: document.getElementById("urgency").value,
     priority: document.getElementById("priority").value,
     status: document.getElementById("status").value,
-    ticket_information: document.getElementById("ticket-information").value.trim(),
+    ticket_information: document.getElementById("ticket-information").innerText.trim(),
     description: document.getElementById("description").value.trim(),
     createdAt: createdAt
   };
