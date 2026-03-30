@@ -307,10 +307,21 @@ body {
   border-color: #1976d2;
 }
 
-.ti-input {
-  min-height: 40px;
-  padding: 6px;
+.ti-row {
+  display: flex;
+  align-items: flex-start;
   margin-bottom: 10px;
+}
+
+.ti-label {
+  min-width: 140px;   /* keeps labels aligned */
+  font-weight: bold;
+}
+
+.ti-input {
+  flex: 1;
+  min-height: 24px;
+  padding: 4px;
   border-bottom: 1px solid #ddd;
 }
 
@@ -318,7 +329,6 @@ body {
   outline: none;
   border-bottom: 1px solid #1976d2;
 }
-
 .description-label {
   display: block;
   margin-bottom: 20px;
