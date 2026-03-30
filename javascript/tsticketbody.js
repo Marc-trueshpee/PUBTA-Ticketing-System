@@ -165,7 +165,7 @@ function parseTicketInfo(text) {
   let currentKey = "";
 
   lines.forEach(line => {
-    const cleanLine = line.trim(); // ✅ IMPORTANT FIX
+    const cleanLine = line.trim();
 
     if (cleanLine.startsWith("Business Impact:")) {
       currentKey = "business";

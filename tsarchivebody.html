@@ -56,32 +56,35 @@
       </label>
     </div>
 
-    <!-- Large scrollable description -->
-    <div class="description-sublabels">
-      <label>
-        Business Impact
-        <textarea id="ticket-business-impact" rows="2" required></textarea>
-      </label>
-
-      <label>
-        Investigation
-        <textarea id="ticket-investigation" rows="2" required></textarea>
-      </label>
-
-      <label>
-        Current Status
-        <textarea id="ticket-current-status" rows="2" required></textarea>
-      </label>
-
-      <label>
-        Next Steps
-        <textarea id="ticket-next-steps" rows="2" required></textarea>
-      </label>
-    </div>
-
     <label class="description-label">
+      Ticket Information
+      <div id="ticket-information" class="editable-box">
+
+        <div class="ti-row">
+          <span class="ti-label">Business Impact:</span>
+          <div contenteditable="true" class="ti-input" id="ti-business"></div>
+        </div>
+
+        <div class="ti-row">
+          <span class="ti-label">Investigation:</span>
+          <div contenteditable="true" class="ti-input" id="ti-investigation"></div>
+        </div>
+
+        <div class="ti-row">
+          <span class="ti-label">Current Status:</span>
+          <div contenteditable="true" class="ti-input" id="ti-status"></div>
+        </div>
+
+        <div class="ti-row">
+          <span class="ti-label">Next Steps:</span>
+          <div contenteditable="true" class="ti-input" id="ti-steps"></div>
+        </div>
+
+      </div>
+    </label>
+      <label>
       Description
-      <textarea id="ticket-description" rows="15"></textarea>
+      <textarea id="description" rows="4" required></textarea>
     </label>
 
     <div class="ticket-history">

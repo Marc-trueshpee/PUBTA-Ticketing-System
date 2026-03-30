@@ -9,7 +9,62 @@ let ticket = archivedTickets.find(t => t.id === ticketId);
 
 // history part below description
 const historyList = document.getElementById("history-list");
-if (!ticket.history) ticket.history = [];
+if (!ticket.history || !Array.isArray(ticket.history)) {
+  ticket.history = [];
+}
+
+
+function parseTicketInfo(text) {
+  const data = {
+    business: "",
+    investigation: "",
+    status: "",
+    steps: ""
+  };
+
+  if (!text) return data;
+
+  const lines = text.split("\n");
+  let currentKey = "";
+
+  lines.forEach(line => {
+    const cleanLine = line.trim();
+
+    if (cleanLine.startsWith("Business Impact:")) {
+      currentKey = "business";
+      data.business = cleanLine.replace("Business Impact:", "").trim();
+
+    } else if (cleanLine.startsWith("Investigation:")) {
+      currentKey = "investigation";
+      data.investigation = cleanLine.replace("Investigation:", "").trim();
+
+    } else if (cleanLine.startsWith("Current Status:")) {
+      currentKey = "status";
+      data.status = cleanLine.replace("Current Status:", "").trim();
+
+    } else if (cleanLine.startsWith("Next Steps:")) {
+      currentKey = "steps";
+      data.steps = cleanLine.replace("Next Steps:", "").trim();
+
+    } else if (currentKey) {
+      data[currentKey] += "\n" + cleanLine;
+    }
+  });
+
+  return data;
+}
+
+const parsed = parseTicketInfo(ticket.ticket_information);
+
+document.getElementById("ti-business").innerText = parsed.business;
+document.getElementById("ti-investigation").innerText = parsed.investigation;
+document.getElementById("ti-status").innerText = parsed.status;
+document.getElementById("ti-steps").innerText = parsed.steps;
+
+document.querySelectorAll(".ti-input").forEach(el => {
+  el.contentEditable = "false";
+});
+
 
 // prefill fields so they load when page opens
 document.getElementById("ticket-id").textContent = ticket.id;
@@ -19,20 +74,13 @@ document.getElementById("ticket-urgency").value = ticket.urgency;
 document.getElementById("ticket-priority").value = ticket.priority;
 document.getElementById("ticket-status").value = "Closed";
 document.getElementById("ticket-description").value = ticket.description;
-document.getElementById("ticket-business-impact").value = ticket.business_impact;
-document.getElementById("ticket-investigation").value = ticket.investigation;
-document.getElementById("ticket-current-status").value = ticket.current_status;
-document.getElementById("ticket-next-steps").value = ticket.next_steps;
+
 //turn off fields so it can't be edited
 document.getElementById("ticket-requestor").disabled = true;
 document.getElementById("ticket-urgency").disabled = true;
 document.getElementById("ticket-priority").disabled = true;
 document.getElementById("ticket-status").disabled = true;
 document.getElementById("ticket-description").readOnly = true;
-document.getElementById("ticket-business-impact").readOnly = true;
-document.getElementById("ticket-investigation").readOnly = true;
-document.getElementById("ticket-current-status").readOnly = true;
-document.getElementById("ticket-next-steps").readOnly = true;
 
 //elements for confirm/archive message
 const confirmModal = document.getElementById("confirm-modal");
@@ -59,6 +107,19 @@ function showConfirm(message, callback) {
     callback(false);
   };
 }
+
+
+const lastUpdated = ticket.history && ticket.history.length > 0
+  ? ticket.history[ticket.history.length - 1].time
+  : ticket.createdAt;
+
+document.getElementById("ticket-information").insertAdjacentHTML("afterbegin", `
+  <div class="ti-row">
+    <span class="ti-label">Last Updated:</span>
+    <div class="ti-input">${lastUpdated}</div>
+  </div>
+`);
+
 
 function showInfo(message, callback) {
   infoMessage.textContent = message;
@@ -93,8 +154,8 @@ function renderHistory() {
       ${entry.descriptionChanged ? `
         <div class="history-description">
           Description changed
-          <div class="history-old">From: \n${entry.oldDescription}</div>
-          <div class="history-new">To: \n${entry.newDescription}</div>
+          <div class="history-old">From:\n${entry.oldDescription || "-"}</div>
+          <div class="history-new">To:\n${entry.newDescription || "-"}</div>
         </div>
       ` : ""}
     `;
