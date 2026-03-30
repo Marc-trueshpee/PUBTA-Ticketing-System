@@ -23,7 +23,6 @@ document.getElementById("ticketForm").addEventListener("submit", e => {
     ticket_information: (() => {
       const container = document.getElementById("ticket-information");
       const inputs = container.querySelectorAll(".ti-input");
-
       return `
     Business Impact: ${inputs[0].innerText.trim()}
     Investigation: ${inputs[1].innerText.trim()}

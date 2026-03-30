@@ -58,7 +58,29 @@
     
     <label class="description-label">
       Ticket Information
-      <textarea id="ticket-information" rows="15"></textarea>
+      <div id="ticket-information" class="editable-box">
+
+        <div class="ti-row">
+          <span class="ti-label">Business Impact:</span>
+          <div contenteditable="true" class="ti-input" id="ti-business"></div>
+        </div>
+
+        <div class="ti-row">
+          <span class="ti-label">Investigation:</span>
+          <div contenteditable="true" class="ti-input" id="ti-investigation"></div>
+        </div>
+
+        <div class="ti-row">
+          <span class="ti-label">Current Status:</span>
+          <div contenteditable="true" class="ti-input" id="ti-status"></div>
+        </div>
+
+        <div class="ti-row">
+          <span class="ti-label">Next Steps:</span>
+          <div contenteditable="true" class="ti-input" id="ti-steps"></div>
+        </div>
+
+      </div>
     </label>
     
     <label class="description-label">
