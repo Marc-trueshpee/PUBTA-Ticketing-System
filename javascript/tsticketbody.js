@@ -201,7 +201,7 @@ document.getElementById("update-ticket").addEventListener("click", () => {
     ticket.description = newDescription;
   }
 
-  if (ticket.information !== newTicketInformation) {
+if (ticket.ticket_information !== newTicketInformation) {
     changes.push(`Ticket Info: ${ticket.ticket_information} → ${newTicketInformation}`);
     ticket.ticket_information = newTicketInformation;
   }
@@ -246,7 +246,6 @@ document.getElementById("update-ticket").addEventListener("click", () => {
     renderHistory(); // refresh history section on screen
 
     showInfo("Ticket updated successfully!", () => {
-      window.location.href = "index.html";
     });
   } else {
     showInfo("No changes made.");
