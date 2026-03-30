@@ -20,7 +20,17 @@ document.getElementById("ticketForm").addEventListener("submit", e => {
     urgency: document.getElementById("urgency").value,
     priority: document.getElementById("priority").value,
     status: document.getElementById("status").value,
-    ticket_information: document.getElementById("ticket-information").innerText.trim(),
+    ticket_information: (() => {
+      const container = document.getElementById("ticket-information");
+      const inputs = container.querySelectorAll(".ti-input");
+
+      return `
+    Business Impact: ${inputs[0].innerText.trim()}
+    Investigation: ${inputs[1].innerText.trim()}
+    Current Status: ${inputs[2].innerText.trim()}
+    Next Steps: ${inputs[3].innerText.trim()}
+      `.trim();
+    })(),
     description: document.getElementById("description").value.trim(),
     createdAt: createdAt
   };

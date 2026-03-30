@@ -307,6 +307,18 @@ body {
   border-color: #1976d2;
 }
 
+.ti-input {
+  min-height: 40px;
+  padding: 6px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.ti-input:focus {
+  outline: none;
+  border-bottom: 1px solid #1976d2;
+}
+
 .description-label {
   display: block;
   margin-bottom: 20px;
