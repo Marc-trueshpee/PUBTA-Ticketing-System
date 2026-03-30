@@ -30,12 +30,14 @@ document.getElementById("ticket-urgency").value = ticket.urgency;
 document.getElementById("ticket-priority").value = ticket.priority;
 document.getElementById("ticket-status").value = ticket.status;
 document.getElementById("ticket-description").value = ticket.description;
+
+
 const parsed = parseTicketInfo(ticket.ticket_information);
 
-document.getElementById("ti-business").innerText = business;
-document.getElementById("ti-investigation").innerText = investigation;
-document.getElementById("ti-status").innerText = status;
-document.getElementById("ti-steps").innerText = steps;
+document.getElementById("ti-business").innerText = parsed.business;
+document.getElementById("ti-investigation").innerText = parsed.investigation;
+document.getElementById("ti-status").innerText = parsed.status;
+document.getElementById("ti-steps").innerText = parsed.steps;
 
 /*
 document.getElementById("ticket-business-impact").value = ticket.business_impact;
@@ -44,9 +46,7 @@ document.getElementById("ticket-current-status").value = ticket.current_status;
 document.getElementById("ticket-next-steps").value = ticket.next_steps;
 */
 
-
 document.getElementById("ticket-requestor").disabled = true;
-
 
 // ===== Modal elements =====
 const confirmModal = document.getElementById("confirm-modal");
@@ -165,26 +165,31 @@ function parseTicketInfo(text) {
   let currentKey = "";
 
   lines.forEach(line => {
-    if (line.startsWith("Business Impact:")) {
+    const cleanLine = line.trim(); // ✅ IMPORTANT FIX
+
+    if (cleanLine.startsWith("Business Impact:")) {
       currentKey = "business";
-      data.business = line.replace("Business Impact:", "").trim();
-    } else if (line.startsWith("Investigation:")) {
+      data.business = cleanLine.replace("Business Impact:", "").trim();
+
+    } else if (cleanLine.startsWith("Investigation:")) {
       currentKey = "investigation";
-      data.investigation = line.replace("Investigation:", "").trim();
-    } else if (line.startsWith("Current Status:")) {
+      data.investigation = cleanLine.replace("Investigation:", "").trim();
+
+    } else if (cleanLine.startsWith("Current Status:")) {
       currentKey = "status";
-      data.status = line.replace("Current Status:", "").trim();
-    } else if (line.startsWith("Next Steps:")) {
+      data.status = cleanLine.replace("Current Status:", "").trim();
+
+    } else if (cleanLine.startsWith("Next Steps:")) {
       currentKey = "steps";
-      data.steps = line.replace("Next Steps:", "").trim();
+      data.steps = cleanLine.replace("Next Steps:", "").trim();
+
     } else if (currentKey) {
-      data[currentKey] += "\n" + line.trim();
+      data[currentKey] += "\n" + cleanLine;
     }
   });
 
   return data;
 }
-
 
 document.getElementById("update-ticket").addEventListener("click", () => {
   const changes = [];
@@ -195,14 +200,12 @@ document.getElementById("update-ticket").addEventListener("click", () => {
   const newPriority = document.getElementById("ticket-priority").value;
   const newStatus = document.getElementById("ticket-status").value;
   const newDescription = document.getElementById("ticket-description").value.trim();
-  const newTicketInformation = `
-    Business Impact: ${document.getElementById("ti-business").innerText.trim()}
-    Investigation: ${document.getElementById("ti-investigation").innerText.trim()}
-    Current Status: ${document.getElementById("ti-status").innerText.trim()}
-    Next Steps: ${document.getElementById("ti-steps").innerText.trim()}
-    `.trim();
-
-  /*
+  const newTicketInformation =
+    "Business Impact:" + document.getElementById("ti-business").innerText.trim() + "\n\n" +
+    "Investigation:" + document.getElementById("ti-investigation").innerText.trim() + "\n\n" +
+    "Current Status:" + document.getElementById("ti-status").innerText.trim() + "\n\n" +
+    "Next Steps:" + document.getElementById("ti-steps").innerText.trim();
+    /*
   const newBusinessImpact = document.getElementById("ticket-business-impact").value.trim();
   const newInvestigation = document.getElementById("ticket-investigation").value.trim();
   const newCurrentStatus = document.getElementById("ticket-current-status").value.trim();
