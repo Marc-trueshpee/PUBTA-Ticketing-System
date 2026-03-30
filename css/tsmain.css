@@ -246,6 +246,7 @@ body {
   box-sizing: border-box; 
 }
 
+
 .ticket-top {
   display: flex;
   justify-content: space-between;
@@ -288,6 +289,24 @@ body {
   border: 1px solid #ccc;
 }
 
+/* Editable ticket information box */
+.editable-box {
+  width: 100%;
+  min-height: 120px;
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-family: inherit;
+  background: white;
+}
+
+.editable-box:focus {
+  outline: none;
+  border-color: #1976d2;
+}
+
 .description-label {
   display: block;
   margin-bottom: 20px;
@@ -295,8 +314,8 @@ body {
 
 .description-label textarea {
   width: 100%;
-  min-height: 250px;
-  max-height: 500px;
+  min-height: 100px;
+  max-height: 300px;
   resize: vertical;
   padding: 10px;
   font-size: 14px;
