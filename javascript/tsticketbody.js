@@ -137,7 +137,9 @@ function renderHistory() {
 
     div.innerHTML = `
       <div class="history-user">${entry.user} — ${entry.time}</div>
-      ${entry.changes.map(c => `<div class="history-change">${c}</div>`).join("")}
+      <div class="history-changes">
+        ${entry.changes.map(c => `<div class="history-change">• ${c}</div>`).join("")}
+      </div>
       ${entry.descriptionChanged ? `
         <div class="history-description">
           Description changed
@@ -248,10 +250,28 @@ document.getElementById("update-ticket").addEventListener("click", () => {
     ticket.description = newDescription;
   }
 
-if (ticket.ticket_information !== newTicketInformation) {
-    changes.push(`Ticket Info: ${ticket.ticket_information} → ${newTicketInformation}`);
-    ticket.ticket_information = newTicketInformation;
+  const oldParsed = parseTicketInfo(ticket.ticket_information);
+  const newParsed = parseTicketInfo(newTicketInformation);
+
+  // Compare each field separately
+  if (oldParsed.business !== newParsed.business) {
+    changes.push(`Business Impact: ${oldParsed.business || "-"} → ${newParsed.business || "-"}`);
   }
+
+  if (oldParsed.investigation !== newParsed.investigation) {
+    changes.push(`Investigation: ${oldParsed.investigation || "-"} → ${newParsed.investigation || "-"}`);
+  }
+
+  if (oldParsed.status !== newParsed.status) {
+    changes.push(`Current Status: ${oldParsed.status || "-"} → ${newParsed.status || "-"}`);
+  }
+
+  if (oldParsed.steps !== newParsed.steps) {
+    changes.push(`Next Steps: ${oldParsed.steps || "-"} → ${newParsed.steps || "-"}`);
+  }
+
+  // finally update stored value
+  ticket.ticket_information = newTicketInformation;
 
   /*
   let oldDescription = null;
